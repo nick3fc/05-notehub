@@ -116,7 +116,10 @@ export default function App() {
       </header>
 
       {response && response?.notes.length > 0 && (
-        <NoteList items={response.notes ?? []} onDelete={handleDelete} />
+        <NoteList
+          items={response.notes ?? []}
+          // onDelete={handleDelete}
+        />
       )}
       {modalOpen && <Modal ModalClose={() => setModalOpen(false)} />}
     </div>
