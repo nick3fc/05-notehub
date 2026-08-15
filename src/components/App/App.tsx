@@ -6,7 +6,7 @@ import css from "./App.module.css";
 import NoteList from "../NoteList/NoteList";
 import SearchBox from "../SearchBox/SearchBox";
 
-import { fetchItems, deleteItem } from "..//../services/Services";
+import { fetchItems, deleteItem } from "../../services/noteService";
 
 // import toast, { Toaster } from "react-hot-toast";
 

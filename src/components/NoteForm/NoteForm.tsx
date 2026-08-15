@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 
-import { createItem } from "../../services/Services";
+import { createItem } from "../../services/noteService";
 // import type { Item } from "../../types/types";
 
 interface closeClickProps {
