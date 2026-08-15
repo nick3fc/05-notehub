@@ -8,6 +8,11 @@ interface FetchResponse {
   notes: Item[];
   totalPages: number;
 }
+interface formValuesProps {
+  content: string;
+  tag: string;
+  title: string;
+}
 
 const apiBaseUrl = import.meta.env.VITE_NOTEHUB_BASE_URL;
 const apiToken = import.meta.env.VITE_NOTEHUB_TOKEN;
@@ -16,7 +21,7 @@ export async function fetchItems(
   query?: string,
   currentPage?: number,
 ): Promise<FetchResponse> {
-  console.log("fetchItems called", currentPage);
+  // console.log("fetchItems called", currentPage);
   const response = await axios.get<FetchResponse>(`${apiBaseUrl}/notes`, {
     headers: {
       Authorization: `Bearer ${apiToken}`,
@@ -26,15 +31,20 @@ export async function fetchItems(
       page: currentPage,
     },
   });
-  // console.log(currentPage);
-  // console.log(response.data);
-  // console.log(response);
-  // console.log(response.data);
+
   return response.data;
 }
 
-export async function createItem() {
-  console.log("createItem called");
+export async function createItem(formValues: formValuesProps) {
+  // console.log("createItem formValues", formValues);
+  const response = await axios.post(`${apiBaseUrl}/notes`, formValues, {
+    headers: {
+      Authorization: `Bearer ${apiToken}`,
+    },
+  });
+
+  // console.log("response values", response.data);
+  return response.data;
 }
 
 export async function deleteItem() {

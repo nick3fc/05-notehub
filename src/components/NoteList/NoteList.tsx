@@ -4,10 +4,11 @@ import type { Item } from "../../types/types";
 
 interface NoteListProps {
   items: Item[];
+  onDelete: (id: string) => void;
 }
 
-export default function NoteList({ items }: NoteListProps) {
-  // console.log("grid received ", items);
+export default function NoteList({ items, onDelete }: NoteListProps) {
+  // console.log("id ", item.id);
 
   return (
     <ul className={css.list}>
@@ -18,7 +19,9 @@ export default function NoteList({ items }: NoteListProps) {
           <p className={css.content}>{item.content}</p>
           <div className={css.footer}>
             <span className={css.tag}>{item.tag}</span>
-            <button className={css.button}>Delete</button>
+            <button className={css.button} onClick={() => onDelete(item.id)}>
+              Delete
+            </button>
           </div>
         </li>
       ))}

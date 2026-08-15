@@ -11,7 +11,7 @@ import { fetchItems } from "..//../services/Services";
 
 // import SearchBar from "../SearchBar/SearchBar";
 // import MovieGrid from "../MovieGrid/MovieGrid";
-// import MovieModal from "../MovieModal/MovieModal";
+import Modal from "../Modal/Modal";
 // import Loader from "../Loader/Loader";
 // import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
@@ -35,7 +35,7 @@ const ReactPaginate = (
 export default function App() {
   const [query] = useState(undefined);
   const [currentPage, setCurrentPage] = useState(1);
-  // const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   // const [movie, setMovie] = useState<Movie | null>(null);
 
   // const handleSearch = (searchString: string) => {
@@ -54,8 +54,9 @@ export default function App() {
     queryKey: ["items", query, currentPage],
     queryFn: () => fetchItems(query, currentPage),
   });
-  console.log("fetchResponse:", response);
-  console.log("fetchResponseData:", response?.notes);
+  // console.log("fetchResponse:", response);
+  // console.log("fetchResponseData:", response?.notes);
+
   // const handleSelect = (movie: Movie) => {
   //   // console.log("app received movie", movie);
   //   setMovie(movie);
@@ -67,7 +68,9 @@ export default function App() {
   //   setModalOpen(false);
   //   setMovie(null);
   // };
+
   // ------------------------------------------------------------
+
   // function App() {
   //   const { data, isLoading, isError } = useQuery({
   //     queryKey: ["movies"],
@@ -107,12 +110,15 @@ export default function App() {
           />
         )}
         {/* Кнопка створення нотатки */}
-        <button className={css.button}>Create note +</button>
+        <button className={css.button} onClick={() => setModalOpen(true)}>
+          Create note +
+        </button>
       </header>
 
       {response && response?.notes.length > 0 && (
-        <NoteList items={response.notes ?? []} />
+        <NoteList items={response.notes ?? []} onDelete={handleDelete} />
       )}
+      {modalOpen && <Modal ModalClose={() => setModalOpen(false)} />}
     </div>
   );
 }
