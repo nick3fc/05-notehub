@@ -4,10 +4,10 @@ import type { Item } from "../../types/types";
 
 interface NoteListProps {
   items: Item[];
-  // onDelete: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
-export default function NoteList({ items }: NoteListProps) {
+export default function NoteList({ items, onDelete }: NoteListProps) {
   // console.log("id ", item.id);
 
   return (
@@ -19,10 +19,7 @@ export default function NoteList({ items }: NoteListProps) {
           <p className={css.content}>{item.content}</p>
           <div className={css.footer}>
             <span className={css.tag}>{item.tag}</span>
-            <button
-              className={css.button}
-              // onClick={() => onDelete(item.id)}
-            >
+            <button className={css.button} onClick={() => onDelete(item.id)}>
               Delete
             </button>
           </div>

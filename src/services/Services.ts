@@ -47,6 +47,13 @@ export async function createItem(formValues: formValuesProps) {
   return response.data;
 }
 
-export async function deleteItem() {
-  console.log("deleteItem called");
+export async function deleteItem(deleteID: string) {
+  console.log("deleteItem called", deleteID);
+  const response = await axios.delete(`${apiBaseUrl}/notes/${deleteID}`, {
+    headers: {
+      Authorization: `Bearer ${apiToken}`,
+    },
+  });
+
+  return response.data;
 }

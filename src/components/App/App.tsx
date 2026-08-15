@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import css from "./App.module.css";
 
 import NoteList from "../NoteList/NoteList";
 import SearchBox from "../SearchBox/SearchBox";
 
-import { fetchItems } from "..//../services/Services";
+import { fetchItems, deleteItem } from "..//../services/Services";
 
 // import toast, { Toaster } from "react-hot-toast";
 
@@ -38,6 +39,7 @@ export default function App() {
   const [modalOpen, setModalOpen] = useState(false);
   // const [movie, setMovie] = useState<Movie | null>(null);
 
+  const queryClient = useQueryClient();
   // const handleSearch = (searchString: string) => {
   //   setQuery(searchString);
   //   setcurrentPage(1);
@@ -56,6 +58,14 @@ export default function App() {
   });
   // console.log("fetchResponse:", response);
   // console.log("fetchResponseData:", response?.notes);
+
+  const handleDelete = async (id: string) => {
+    await deleteItem(id);
+
+    await queryClient.invalidateQueries({
+      queryKey: ["items"],
+    });
+  };
 
   // const handleSelect = (movie: Movie) => {
   //   // console.log("app received movie", movie);
@@ -116,10 +126,7 @@ export default function App() {
       </header>
 
       {response && response?.notes.length > 0 && (
-        <NoteList
-          items={response.notes ?? []}
-          // onDelete={handleDelete}
-        />
+        <NoteList items={response.notes ?? []} onDelete={handleDelete} />
       )}
       {modalOpen && <Modal ModalClose={() => setModalOpen(false)} />}
     </div>
