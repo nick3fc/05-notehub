@@ -1,10 +1,10 @@
 import css from "./MovieGrid.module.css";
 
-// import type { Movie } from "../../types/types";
+import type { Item } from "../../types/types";
 
 interface MovieGridProps {
-  onSelect: (movie: Movie) => void;
-  movies: Movie[];
+  onSelect: (movie: Item) => void;
+  movies: Item[];
 }
 
 export default function MovieGrid({ onSelect, movies }: MovieGridProps) {
@@ -13,12 +13,12 @@ export default function MovieGrid({ onSelect, movies }: MovieGridProps) {
   return (
     <ul className={css.grid}>
       {/* Набір елементів списку з фільмами */}
-      {movies.map((movie: Movie) => (
+      {movies.map((movie: Item) => (
         <li key={movie.id} onClick={() => onSelect(movie)}>
           <div id={`card-${movie.id}`} className={css.card}>
             <img
               className={css.image}
-              src={`${import.meta.env.VITE_TMDB_IMGPATH}${movie.poster_path}`}
+              src={`${import.meta.env.VITE_TMDB_IMGPATH}${movie.tag}`}
               alt={`movie ${movie.title}`}
               loading="lazy"
             />

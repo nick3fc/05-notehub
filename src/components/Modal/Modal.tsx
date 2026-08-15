@@ -3,11 +3,11 @@ import { createPortal } from "react-dom";
 
 import css from "../MovieModal/MovieModal.module.css";
 
-// import type { Movie } from "../../types/types";
+import type { Item } from "../../types/types";
 
 interface MovieModalProps {
   onClose: () => void;
-  movie: Movie;
+  movie: Item;
 }
 
 export default function MovieModal({ onClose, movie }: MovieModalProps) {
@@ -43,18 +43,18 @@ export default function MovieModal({ onClose, movie }: MovieModalProps) {
           &times;
         </button>
         <img
-          src={`${import.meta.env.VITE_TMDB_IMGPATH}${movie.backdrop_path}`}
+          src={`${import.meta.env.VITE_TMDB_IMGPATH}${movie.tag}`}
           alt={movie.title}
           className={css.image}
         />
         <div className={css.content}>
           <h2>{movie.title}</h2>
-          <p>{movie.overview}</p>
+          <p>{movie.tag}</p>
           <p>
-            <strong>Release Date:</strong> {movie.release_date}
+            <strong>Release Date:</strong> {movie.tag}
           </p>
           <p>
-            <strong>Rating:</strong> {movie.vote_average.toFixed(1)}/10
+            <strong>Rating:</strong> {movie.tag}
           </p>
         </div>
       </div>
