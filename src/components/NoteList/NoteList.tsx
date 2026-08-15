@@ -1,6 +1,6 @@
 import css from "./NoteList.module.css";
 
-import type { Item } from "../../types/types";
+import type { Item } from "../../types/note";
 
 interface NoteListProps {
   items: Item[];

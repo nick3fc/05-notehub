@@ -2,7 +2,7 @@ import axios from "axios";
 
 // import type { FetchResponse } from "../types/types";
 
-import type { Item } from "../types/types";
+import type { Item } from "../types/note";
 
 interface FetchResponse {
   notes: Item[];

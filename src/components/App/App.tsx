@@ -34,7 +34,7 @@ const ReactPaginate = (
 ).default;
 
 export default function App() {
-  const [query] = useState(undefined);
+  const [query, setQuery] = useState<string | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   // const [movie, setMovie] = useState<Movie | null>(null);
@@ -103,7 +103,9 @@ export default function App() {
     <div className={css.app}>
       <header className={css.toolbar}>
         {/* Компонент SearchBox */}
-        <SearchBox />
+        <SearchBox
+          handleSearch={(searchString: string) => setQuery(searchString)}
+        />
         {/* Пагінація */}
         {response && response.totalPages > 1 && (
           <ReactPaginate

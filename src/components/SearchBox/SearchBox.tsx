@@ -1,10 +1,11 @@
 import css from "./SearchBox.module.css";
 // import toast, { Toaster } from "react-hot-toast";
 
-// interface SearchBarProps {
-//   onSubmit: (searchString: string) => void;
-// }
-export default function SearchBox() {
+interface handleSearchProps {
+  handleSearch: (searchString: string) => void;
+}
+
+export default function SearchBox({ handleSearch }: handleSearchProps) {
   // const handleSubmit = (formData: FormData) => {
   //   const searchString = (formData.get("query") as string).trim();
   //   if (searchString === "") {
@@ -22,7 +23,12 @@ export default function SearchBox() {
 
   return (
     <>
-      <input className={css.input} type="text" placeholder="Search notes" />
+      <input
+        className={css.input}
+        type="text"
+        placeholder="Search notes"
+        onChange={(event) => handleSearch(event.target.value)}
+      />
     </>
   );
 }
