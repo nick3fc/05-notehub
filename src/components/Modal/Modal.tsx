@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 
 import css from "../MovieModal/MovieModal.module.css";
 
-import type { Movie } from "../../types/types";
+// import type { Movie } from "../../types/types";
 
 interface MovieModalProps {
   onClose: () => void;
