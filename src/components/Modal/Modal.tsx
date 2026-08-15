@@ -4,11 +4,9 @@ import { createPortal } from "react-dom";
 import NoteForm from "../NoteForm/NoteForm";
 
 import css from "../Modal/Modal.module.css";
-// import type { Item } from "../../types/types";
 
 interface ModalProps {
   ModalClose: () => void;
-  // movie: Item;
 }
 
 export default function Modal({ ModalClose }: ModalProps) {

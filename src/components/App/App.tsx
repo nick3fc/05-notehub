@@ -6,7 +6,7 @@ import css from "./App.module.css";
 import NoteList from "../NoteList/NoteList";
 import SearchBox from "../SearchBox/SearchBox";
 
-import { fetchItems, deleteItem } from "../../services/noteService";
+import { fetchNotes, deleteNote } from "../../services/noteService";
 
 // import toast, { Toaster } from "react-hot-toast";
 
@@ -53,17 +53,17 @@ export default function App() {
     // isLoading,
     // isError,
   } = useQuery({
-    queryKey: ["items", query, currentPage],
-    queryFn: () => fetchItems(query, currentPage),
+    queryKey: ["notes", query, currentPage],
+    queryFn: () => fetchNotes(query, currentPage),
   });
-  // console.log("fetchResponse:", response);
+  // console.log("filter:", query);
   // console.log("fetchResponseData:", response?.notes);
 
   const handleDelete = async (id: string) => {
-    await deleteItem(id);
+    await deleteNote(id);
 
     await queryClient.invalidateQueries({
-      queryKey: ["items"],
+      queryKey: ["notes"],
     });
   };
 
@@ -128,7 +128,7 @@ export default function App() {
       </header>
 
       {response && response?.notes.length > 0 && (
-        <NoteList items={response.notes ?? []} onDelete={handleDelete} />
+        <NoteList notes={response.notes ?? []} onDelete={handleDelete} />
       )}
       {modalOpen && <Modal ModalClose={() => setModalOpen(false)} />}
     </div>

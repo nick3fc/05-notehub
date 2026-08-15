@@ -4,10 +4,10 @@ import { useFormik } from "formik";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 
-import { createItem } from "../../services/noteService";
+import { createNote } from "../../services/noteService";
 // import type { Item } from "../../types/types";
 
-interface closeClickProps {
+interface NoteFormProps {
   closeClick: () => void;
 }
 
@@ -18,16 +18,14 @@ const validationSchema = Yup.object({
     .required("Title is required"),
 
   content: Yup.string()
-    .min(10, "Title must be at least 10 characters")
-    .max(500, "Content must be at most 500 characters")
-    .required("Content is required"),
 
+    .max(500, "Content must be at most 500 characters"),
   tag: Yup.string()
     .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"])
-    .required("Easter Egg"),
+    .required("Tag is required"),
 });
 
-export default function NoteForm({ closeClick }: closeClickProps) {
+export default function NoteForm({ closeClick }: NoteFormProps) {
   const queryClient = useQueryClient();
   const formik = useFormik({
     initialValues: {
@@ -40,9 +38,9 @@ export default function NoteForm({ closeClick }: closeClickProps) {
       try {
         setStatus("");
 
-        await createItem(values);
+        await createNote(values);
         await queryClient.invalidateQueries({
-          queryKey: ["items"],
+          queryKey: ["notes"],
         });
         closeClick();
       } catch (error) {

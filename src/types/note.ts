@@ -1,4 +1,4 @@
-export interface Item {
+export interface Note {
   content: string;
   createdAt: string;
   id: string;
@@ -8,6 +8,6 @@ export interface Item {
 }
 
 // export interface FetchResponse {
-//   notes: Item[];
+//   notes: Note[];
 //   totalPages: number;
 // }
