@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useDebounce } from "use-debounce";
 
 import css from "./App.module.css";
 
@@ -17,16 +18,23 @@ import { fetchNotes } from "../../services/noteService";
 
 export default function App() {
   const [query, setQuery] = useState<string | undefined>(undefined);
+  const [debouncedQuery] = useDebounce(query, 1000);
   const [currentPage, setCurrentPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const handleFilter = (searchString: string) => {
+    setQuery(searchString);
+    setCurrentPage(1);
+  };
 
   const {
     data: response,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["notes", query, currentPage],
-    queryFn: () => fetchNotes(query, currentPage),
+    queryKey: ["notes", debouncedQuery, currentPage],
+    queryFn: () => fetchNotes(debouncedQuery, currentPage),
+    placeholderData: keepPreviousData,
   });
   // console.log("filter:", query);
   // console.log("fetchResponseData:", response?.notes);
@@ -38,7 +46,7 @@ export default function App() {
       <header className={css.toolbar}>
         {/* Компонент SearchBox */}
         <SearchBox
-          handleSearch={(searchString: string) => setQuery(searchString)}
+          handleSearch={(searchString: string) => handleFilter(searchString)}
         />
         {/* Пагінація */}
         {response && response.totalPages > 1 && (
