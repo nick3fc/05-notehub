@@ -1,11 +1,11 @@
 import css from "./SearchBox.module.css";
 // import toast, { Toaster } from "react-hot-toast";
 
-interface handleSearchProps {
+interface SearchBoxProps {
   handleSearch: (searchString: string) => void;
 }
 
-export default function SearchBox({ handleSearch }: handleSearchProps) {
+export default function SearchBox({ handleSearch }: SearchBoxProps) {
   // const handleSubmit = (formData: FormData) => {
   //   const searchString = (formData.get("query") as string).trim();
   //   if (searchString === "") {

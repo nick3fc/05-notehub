@@ -5,7 +5,10 @@ import css from "./App.module.css";
 
 import NoteList from "../NoteList/NoteList";
 import SearchBox from "../SearchBox/SearchBox";
-
+import NoteForm from "../NoteForm/NoteForm";
+import Loader from "../Loader/Loader";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import Pagination from "../Pagination/Pagination";
 import { fetchNotes, deleteNote } from "../../services/noteService";
 
 // import toast, { Toaster } from "react-hot-toast";
@@ -13,25 +16,23 @@ import { fetchNotes, deleteNote } from "../../services/noteService";
 // import SearchBar from "../SearchBar/SearchBar";
 // import MovieGrid from "../MovieGrid/MovieGrid";
 import Modal from "../Modal/Modal";
-// import Loader from "../Loader/Loader";
-// import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 // import { getMoviesList } from "..//../services/movieService";
 
 // import type { Movie } from "../../types/movie";
 import { useQuery } from "@tanstack/react-query";
 
-import ReactPaginateModule from "react-paginate";
-import type { ReactPaginateProps } from "react-paginate";
-import type { ComponentType } from "react";
+// import ReactPaginateModule from "react-paginate";
+// import type { ReactPaginateProps } from "react-paginate";
+// import type { ComponentType } from "react";
 
-type ModuleWithDefault<T> = { default: T };
+// type ModuleWithDefault<T> = { default: T };
 
-const ReactPaginate = (
-  ReactPaginateModule as unknown as ModuleWithDefault<
-    ComponentType<ReactPaginateProps>
-  >
-).default;
+// const ReactPaginate = (
+//   ReactPaginateModule as unknown as ModuleWithDefault<
+//     ComponentType<ReactPaginateProps>
+//   >
+// ).default;
 
 export default function App() {
   const [query, setQuery] = useState<string | undefined>(undefined);
@@ -50,8 +51,8 @@ export default function App() {
   // const itemsList = fetchItems();
   const {
     data: response,
-    // isLoading,
-    // isError,
+    isLoading,
+    isError,
   } = useQuery({
     queryKey: ["notes", query, currentPage],
     queryFn: () => fetchNotes(query, currentPage),
@@ -108,17 +109,10 @@ export default function App() {
         />
         {/* Пагінація */}
         {response && response.totalPages > 1 && (
-          <ReactPaginate
+          <Pagination
             pageCount={response.totalPages}
-            pageRangeDisplayed={5}
-            marginPagesDisplayed={1}
-            forcePage={currentPage - 1}
-            onPageChange={({ selected }) => setCurrentPage(selected + 1)}
-            previousLabel="←"
-            nextLabel="→"
-            containerClassName={css.pagination}
-            activeClassName={css.active}
-            disabledClassName={css.disabled}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
           />
         )}
         {/* Кнопка створення нотатки */}
@@ -127,10 +121,21 @@ export default function App() {
         </button>
       </header>
 
-      {response && response?.notes.length > 0 && (
-        <NoteList notes={response.notes ?? []} onDelete={handleDelete} />
+      {isLoading ? (
+        <Loader />
+      ) : isError ? (
+        <ErrorMessage />
+      ) : (
+        response &&
+        response?.notes.length > 0 && (
+          <NoteList notes={response.notes ?? []} onDelete={handleDelete} />
+        )
       )}
-      {modalOpen && <Modal ModalClose={() => setModalOpen(false)} />}
+      {modalOpen && (
+        <Modal onModalClose={() => setModalOpen(false)}>
+          <NoteForm closeClick={() => setModalOpen(false)} />
+        </Modal>
+      )}
     </div>
   );
 }
