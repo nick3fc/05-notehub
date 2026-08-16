@@ -1,7 +1,7 @@
 import css from "./NoteForm.module.css";
 
 import { ErrorMessage, FormikProvider, useFormik } from "formik";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 
 import { createNote } from "../../services/noteService";
@@ -10,23 +10,32 @@ import { createNote } from "../../services/noteService";
 interface NoteFormProps {
   closeClick: () => void;
 }
-
 const validationSchema = Yup.object({
   title: Yup.string()
     .min(3, "Title must be at least 3 characters")
     .max(50, "Title must be at most 50 characters")
     .required("Title is required"),
-
-  content: Yup.string()
-
-    .max(500, "Content must be at most 500 characters"),
+  content: Yup.string().max(500, "Content must be at most 500 characters"),
   tag: Yup.string()
     .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"])
     .required("Tag is required"),
 });
 
+// ------------------------------------------------------------
+
 export default function NoteForm({ closeClick }: NoteFormProps) {
   const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: createNote,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["notes"],
+      });
+      closeClick();
+    },
+  });
+
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -34,19 +43,14 @@ export default function NoteForm({ closeClick }: NoteFormProps) {
       tag: "Todo",
     },
     validationSchema,
-    onSubmit: async (values, { setStatus }) => {
-      try {
-        setStatus("");
+    onSubmit: (values, { setStatus }) => {
+      setStatus("");
 
-        await createNote(values);
-        await queryClient.invalidateQueries({
-          queryKey: ["notes"],
-        });
-        closeClick();
-      } catch (error) {
-        setStatus("Create Note Failed");
-        return error;
-      }
+      mutate(values, {
+        onError: () => {
+          setStatus("Create Note Failed");
+        },
+      });
     },
   });
 

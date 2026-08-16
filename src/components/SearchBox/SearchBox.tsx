@@ -21,6 +21,8 @@ export default function SearchBox({ handleSearch }: SearchBoxProps) {
   //   }
   // };
 
+  // ------------------------------------------------------------
+
   return (
     <>
       <input
